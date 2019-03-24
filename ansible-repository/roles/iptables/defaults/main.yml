@@ -1,0 +1,5 @@
+# Default ssh port
+iptables_ssh_port: 22
+
+# gogs ssh port
+iptables_ssh_gogs_port: 23457

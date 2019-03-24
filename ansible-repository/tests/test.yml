@@ -1,0 +1,10 @@
+- hosts: vagrant
+  vars:
+    - ssh_port: 23456
+    - ansible_unit_test: True
+  tags:
+    - case-1
+  roles:
+    #- { role: sshd, become: yes }
+    #- { role: docker, become: yes }
+    - { role: iptables, become: yes }

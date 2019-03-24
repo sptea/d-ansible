@@ -1,0 +1,19 @@
+- name: sshd - changes using port
+  lineinfile:
+    backup: yes
+    path: /etc/ssh/sshd_config
+    regexp: "^Port 22"
+    line: "Port {{sshd_ssh_port}}"
+    backrefs: yes
+
+- name: sshd - unable password login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication yes"
+    line: "PasswordAuthentication no"
+    backrefs: yes
+
+- name: restart sshd(ubuntus)
+  command: /etc/init.d/ssh restart
+#- name: restart sshd
+#  service: name=sshd state=restarted

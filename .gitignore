@@ -1,0 +1,4 @@
+# ansible host file
+hosts
+# ansible retry file
+*.retry

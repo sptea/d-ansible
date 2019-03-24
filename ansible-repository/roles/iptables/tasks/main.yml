@@ -1,0 +1,82 @@
+- name: Change INPUT policy to ACCEPT
+  iptables:
+    chain: INPUT
+    policy: ACCEPT
+
+- name: Flush iptables
+  iptables:
+    flush: true
+
+- name: Drop none
+  shell: iptables -I INPUT -p tcp --tcp-flags ALL NONE -j DROP
+
+- name: Drop SYNflood
+  shell: iptables -I INPUT -p tcp ! --syn -m state --state NEW -j DROP
+
+- name: Drop stealth scan
+  shell: iptables -I INPUT -p tcp --tcp-flags ALL ALL -j DROP
+
+- name: Keep established connection
+  iptables:
+    chain: INPUT
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT
+
+- name: ACCEPT local
+  iptables:
+    chain: INPUT
+    in_interface: lo
+    jump: ACCEPT
+
+- name: ACCEPT ping
+  iptables:
+    chain: INPUT
+    protocol: icmp
+    jump: ACCEPT
+
+- name: ACCEPT ssh INPUT
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    match: tcp
+    destination_port: "{{ iptables_ssh_port }}"
+    jump: ACCEPT
+
+- name: ACCEPT ssh(gogs) INPUT
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    match: tcp
+    destination_port: "{{ iptables_ssh_gogs_port }}"
+    jump: ACCEPT
+
+- name: ACCEPT http INPUT
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    match: tcp
+    destination_port: 80
+    jump: ACCEPT
+
+- name: ACCEPT https INPUT
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    match: tcp
+    destination_port: 443
+    jump: ACCEPT
+
+- name: DROP other INPUT
+  iptables:
+    chain: INPUT
+    policy: DROP
+
+- name: ACCEPT OUTPUT
+  iptables:
+    chain: OUTPUT
+    policy: ACCEPT
+
+- name: rewrite Docker settings by restarting docker
+  service:
+    name: docker
+    state: restarted

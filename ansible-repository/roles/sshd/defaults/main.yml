@@ -1,0 +1,2 @@
+# Default ssh port
+sshd_ssh_port: 22

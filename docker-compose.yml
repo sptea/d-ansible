@@ -1,0 +1,11 @@
+version: "3"
+services:
+  ansible:
+    build: "./ansible-image"
+    tty: true
+    container_name: "ansible_client"
+    volumes:
+      - ./ansible-repository/:/etc/ansible/
+      - ~/.ssh/id_rsa:/root/.ssh/id_rsa
+    working_dir: /etc/ansible
+    command: /bin/bash
