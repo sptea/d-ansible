@@ -5,10 +5,9 @@ Use with https://github.com/sptea/docker-compose-files
 
 ### Setting
 
-- Needs ssh key to access vps.
-  Default location : `~/.ssh/id_rsa`
-- hosts file to apply setting
-  `./ansible-repository/hosts`
+- Needs ssh key to access vps. Default location : `~/.ssh/id_rsa`
+- Add hosts file to register host `./ansible-repository/hosts`
+- Configure pull-git role. Add required files to `/ansible-repository/roles/pull-git/files`
 
 ### Usage
 
