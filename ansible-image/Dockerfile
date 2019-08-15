@@ -1,9 +1,13 @@
-FROM ubuntu:16.04
+FROM ruby:2.6.3
 
-RUN echo "build start" && \
-    apt-get update && \
-    apt-get install -y software-properties-common && \
-    apt-add-repository -y ppa:ansible/ansible && \
-    apt-get update && \
-    apt-get install -y ansible=2.7.4-1ppa~xenial && \
-    echo "build success"
+ARG SOURCES_PATH="/etc/apt/sources.list"
+
+RUN echo "install ansible" && \
+    echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" >> $SOURCES_PATH && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367 && \
+    apt update && \
+    apt install ansible -y && \
+    echo "success installing ansible"
+RUN echo "install dotenv" && \
+    gem install dotenv && \
+    echo "success installing dotenv"
